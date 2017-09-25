@@ -26,7 +26,6 @@ public class MockUtils {
 				parentClass.
 				getName()+"Mocker_" + rn.nextInt()%1000,
 				parentClass);
-		//System.out.println(childClass.getName());
 		childClass.setSuperclass(parentClass);
 		childClass.stopPruning(true);
 		childClass.defrost();
@@ -43,13 +42,13 @@ public class MockUtils {
 		return prepareClass(childClass, strMethod , parameters , newMethos );
 	}
 
+	//TODO not implemented yet
 	public boolean hasMethod(CtClass cc , String strMethod , ArrayList<Class<?>> parameters , String newMethos) throws NotFoundException, CannotCompileException {
 		StringBuilder signature = new StringBuilder();
 		signature.append(strMethod).append("(");
 		if(parameters != null) {
-			for (int i = 0; i < parameters.size() - 1; i++) {
+			for (int i = 0; i < parameters.size() - 1; i++)
 				signature.append(parameters.get(i).getCanonicalName()).append(",");
-			}
 			signature.append(parameters.get(parameters.size()-1).getCanonicalName());
 		}
 		signature.append(")");
@@ -57,10 +56,7 @@ public class MockUtils {
 		CtMethod[] ms = cc.getSuperclass().getDeclaredMethods();
 		for (int i = 0; i < ms.length; i++) {
 			m2 = new CtMethod(ms[i].getReturnType(), ms[i].getName(), ms[i].getParameterTypes(), cc);
-			//System.out.println(signature.toString() + " xxxx " +ms[i].getLongName().substring(ms[i].getLongName().lastIndexOf("."+strMethod)+1));
 			if(signature.toString().equals(ms[i].getLongName().substring(ms[i].getLongName().lastIndexOf("."+strMethod)+1))) {
-				//System.out.println("fffffffff");
-				//System.out.println("qqqqqqqqqqqqqq " + ms[i].visibleFrom(cc));
 				m2.setBody(newMethos);
 				cc.addMethod(m2);
 			}else {
@@ -69,7 +65,6 @@ public class MockUtils {
 		}
 		return false;
 	}
-
 
 	public static <T> CtClass prepareClass(CtClass cc , String strMethod, ArrayList<Class<?>> parameters , String newMethos) throws Exception {
 		StringBuilder signature = new StringBuilder();
@@ -82,31 +77,11 @@ public class MockUtils {
 		}
 		signature.append(")");
 		CtMethod[] ms = cc.getDeclaredMethods();
-		for (int i = 0; i < ms.length; i++) {
-			//System.out.println(signature.toString() + " xxXXXXxx " +ms[i].getLongName().substring(ms[i].getLongName().lastIndexOf("."+strMethod)+1));
-			if(signature.toString().equals(ms[i].getLongName().substring(ms[i].getLongName().lastIndexOf("."+strMethod)+1))) {
-				//System.out.println(signature.toString() + " xxxx " +ms[i].getLongName().substring(ms[i].getLongName().lastIndexOf("."+strMethod)+1));
+		for (int i = 0; i < ms.length; i++)
+			if(signature.toString().equals(ms[i].getLongName().substring(ms[i].getLongName().lastIndexOf("."+strMethod)+1)))
 				ms[i].setBody(newMethos);
-				//System.out.println(ms[i].getReturnType() + " ZZZZ " + ms[i].getName()  + " ZZZZ " + ms[i].getParameterTypes()  + " ZZZZ " + cc);
-				/*CtMethod method = new CtMethod(ms[i].getReturnType(),
-						ms[i].getName(),
-						ms[i].getParameterTypes(),
-						cc);
-				cc.addMethod(
-						method);*/
-			}
-		}
 		return cc;
 	}
-
-
-	/*public static <T> Object initiateClass(CtClass cc, Class<?>[] clazzes, Object[] objects) throws Exception {
-		String[] stringClazzes = new String[clazzes.length];
-		for (int i = 0; i < clazzes.length; i++) {
-			stringClazzes.[i] = clazzes.c
-		}
-		return initiateClass( cc , clazzes , objects);
-	}*/
 
 	public static <T> Object initiateClass(CtClass cc, Class<?>[] clazzes, Object[] objects) throws Exception {
 		cc.stopPruning(false);
@@ -117,27 +92,22 @@ public class MockUtils {
 			if(clazzes != null) {
 				for (int i = 0; i < gg.getConstructors().length; i++) {
 					verifier = true;
-					//System.out.println(gg.getConstructors()[i]+ "--" );
 					for (int j = 0; j <gg.getConstructors()[i].getParameters().length; j++) {
-						if(gg.getConstructors()[i].getParameters().length ==  clazzes.length) {
-							//System.out.println(gg.getConstructors()[i].getParameters()[j].getType().getCanonicalName().equalsIgnoreCase(clazzes[j].getCanonicalName()));
+						if(gg.getConstructors()[i].getParameters().length ==  clazzes.length)
 							if(!gg.getConstructors()[i].getParameters()[j].getType().getCanonicalName().equalsIgnoreCase(clazzes[j].getCanonicalName()))
 								verifier = false;
-						}else
-							verifier = false;
+							else
+								verifier = false;
 					}
 
-					if(verifier) {
+					if(verifier)
 						return  gg.
 								getConstructors()[i].
 								newInstance(objects);
-					}
 				}
-			}else {
-				//System.out.println(gg.getConstructors()[0]);
+			}else
 				return gg.
 						newInstance();
-			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

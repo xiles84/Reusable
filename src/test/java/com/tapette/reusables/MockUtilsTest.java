@@ -63,9 +63,7 @@ public class MockUtilsTest {
 	public void myCoolTest() throws Exception {
 		CtClass aa = MockUtils.prepareClass("com.tapette.reusables.MockUtilsTest$TestClass", "privateMethod" , null , "{ return true; }");
 		MockUtils.prepareClass(aa, "protectedMethod" , null , "{ return true; }");
-		//MockUtilsTest.TestClass bb = (MockUtilsTest.TestClass)MockUtils.initiateClass(aa , new Class<?>[] {MockUtilsTest.class , String.class} , new Object[] { new MockUtilsTest() , ""});
 		MockUtilsTest.TestClass bb = (MockUtilsTest.TestClass)MockUtils.initiateClass(aa , new Class<?>[] {MockUtilsTest.class} , new Object[] { new MockUtilsTest()});
-		//System.out.println(bb.getClass().getCanonicalName());
 		if(!bb.publicMethod())
 			fail("myCoolTest failed");
 	}
